@@ -19,6 +19,8 @@ public class User {
     @Column(name = "user_id")
     private Long userId;
     private String name;
+    private String phone;
+    private Character gender;
 
     @Column(unique = true)
     private String email;
