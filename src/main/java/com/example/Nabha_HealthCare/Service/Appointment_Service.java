@@ -2,13 +2,14 @@ package com.example.Nabha_HealthCare.Service;
 
 import com.example.Nabha_HealthCare.Entity.Appointment;
 import com.example.Nabha_HealthCare.Repositories.Appointment_Repo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class Appointment_Service {
-
+@Autowired
     private  Appointment_Repo appointmentRepository;
 
     public Appointment createAppointment(Appointment appointment) {

@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(origins = "*")
-public class UserController {
+public class User_Controller {
 
     @Autowired
     private User_Service userService;
@@ -47,17 +47,17 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/{id}")
-    public UserResponse getById(@PathVariable Long id) {
+    @GetMapping("/patient/{id}")
+    public UserResponse getPatientById(@PathVariable Long id) {
         return userService.getById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public UserResponse update(@PathVariable Long id, @RequestBody User u) {
         return userService.updateUser(id, u);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Long id) {
         userService.deleteUser(id);
     }

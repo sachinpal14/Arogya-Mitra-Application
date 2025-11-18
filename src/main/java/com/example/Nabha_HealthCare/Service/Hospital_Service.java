@@ -9,7 +9,7 @@ import com.example.Nabha_HealthCare.Entity.User;
 import com.example.Nabha_HealthCare.Repositories.Doctor_Repo;
 import com.example.Nabha_HealthCare.Repositories.Hospital_Repo;
 import com.example.Nabha_HealthCare.Repositories.Patient_Repo;
-import com.example.Nabha_HealthCare.Repositories.UserRepository;
+import com.example.Nabha_HealthCare.Repositories.User_Repo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +28,10 @@ public class Hospital_Service {
     private Patient_Repo patientRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private User_Repo userRepository;
 
     public List<Doctor> getDoctorsByHospital(Long hospitalId) {
-        return doctorRepository.findByHospital_HospitalId(Math.toIntExact(hospitalId));
+        return doctorRepository.findByHospital_HospitalId(hospitalId);
     }
 
     public List<Patient> getPatientsByHospital(Long hospitalId) {

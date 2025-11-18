@@ -9,15 +9,7 @@ import java.util.List;
 public interface Patient_Repo extends JpaRepository<Patient,Integer> {
     List<Patient> findByName(String name);
 
-    void deleteByName(String name);
-
-    List<Patient> findByAge(Integer age);
-
-    List<Patient> findByGender(String gender);
-
-    List<Patient> findByPhone(String phone);
-
-    List<Patient> findByVillage(String village);
-
     List<Patient> findByHospital_HospitalId(Long hospitalId);
+
+    List<Patient> findByNameContainingIgnoreCase(String name);
 }

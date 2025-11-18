@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/appointments")
+@RequestMapping("/appointments")
 public class Appointment_Controller {
 
     @Autowired
@@ -33,13 +33,13 @@ public class Appointment_Controller {
     }
 
     // Update Appointment
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public Appointment updateAppointment(@PathVariable Long id, @RequestBody Appointment appointment) {
         return appointmentService.updateAppointment(id, appointment);
     }
 
     // Delete Appointment
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteAppointment(@PathVariable Long id) {
         appointmentService.deleteAppointment(id);
         return "Appointment deleted successfully";
@@ -52,7 +52,7 @@ public class Appointment_Controller {
     }
 
     // Get All Appointments
-    @GetMapping
+    @GetMapping("/all")
     public List<Appointment> getAllAppointments() {
         return appointmentService.getAllAppointments();
     }

@@ -2,57 +2,69 @@ package com.example.Nabha_HealthCare.Service;
 
 import com.example.Nabha_HealthCare.Entity.Doctor;
 import com.example.Nabha_HealthCare.Repositories.Doctor_Repo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class Doctor_Service {
+@Autowired
+    private  Doctor_Repo doctorRepository;
 
-    @Autowired
-    private Doctor_Repo doctorRepo;
+    public Doctor createDoctor(Doctor doctor) {
+        return doctorRepository.save(doctor);
+    }
+
+    public Doctor getDoctorById(Long id) {
+        return doctorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Doctor not found: " + id));
+    }
 
     public List<Doctor> getAllDoctors() {
-        return doctorRepo.findAll();
+        return doctorRepository.findAll();
     }
 
-    public Optional<Doctor> getDoctorById(Integer id) {
-        return doctorRepo.findById(id);
+    public Doctor updateDoctor(Long id, Doctor doctor) {
+        Doctor existing = getDoctorById(id);
+
+        existing.setName(doctor.getName());
+        existing.setGender(doctor.getGender());
+        existing.setQualification(doctor.getQualification());
+        existing.setEmail(doctor.getEmail());
+        existing.setPassword(doctor.getPassword());
+        existing.setSpecialist(doctor.getSpecialist());
+        existing.setFees(doctor.getFees());
+        existing.setAge(doctor.getAge());
+        existing.setHospital(doctor.getHospital());
+
+        return doctorRepository.save(existing);
     }
 
-    public List<Doctor> getDoctorsByName(String name) {
-        return doctorRepo.findByName(name);
+    public void deleteDoctor(Long id) {
+        doctorRepository.deleteById(id);
     }
 
-    public List<Doctor> getBySpecialization(String specialization) {
-        return doctorRepo.findBySpecialization(specialization);
+    public List<Doctor> getDoctorsByHospital(Long hospitalId) {
+        return doctorRepository.findByHospital_HospitalId(hospitalId);
     }
 
-    public List<Doctor> getByAvailability(String status) {
-        return doctorRepo.findByAvailabilityStatus(status);
+    public List<Doctor> getDoctorsBySpecialist(String specialist) {
+        return doctorRepository.findBySpecialist(specialist);
     }
 
-    public List<Doctor> getByHospital(Integer hospitalId) {
-        return doctorRepo.findByHospital_HospitalId(hospitalId);
+    public List<Doctor> searchDoctorsByName(String name) {
+        return doctorRepository.findByNameContainingIgnoreCase(name);
     }
 
-    public Doctor addDoctor(Doctor doctor) {
-        return doctorRepo.save(doctor);
-    }
+    public Doctor loginDoctor(String email, String password) {
+        Doctor doctor = doctorRepository.findByEmail(email);
 
-    public Doctor updateDoctor(Integer id, Doctor updatedDoctor) {
-        return doctorRepo.findById(id).map(doc -> {
-            doc.setName(updatedDoctor.getName());
-            doc.setSpecialization(updatedDoctor.getSpecialization());
-            doc.setAvailabilityStatus(updatedDoctor.getAvailabilityStatus());
-            doc.setHospital(updatedDoctor.getHospital());
-            return doctorRepo.save(doc);
-        }).orElseThrow(() -> new RuntimeException("Doctor not found with id " + id));
-    }
-
-    public void deleteDoctor(Integer id) {
-        doctorRepo.deleteById(id);
+        if (doctor != null && doctor.getPassword().equals(password)) {
+            return doctor;
+        }
+        throw new RuntimeException("Invalid email or password");
     }
 }

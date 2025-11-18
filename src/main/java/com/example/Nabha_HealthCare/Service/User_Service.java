@@ -4,7 +4,8 @@ import com.example.Nabha_HealthCare.DTO.AuthResponse;
 import com.example.Nabha_HealthCare.DTO.LoginRequest;
 import com.example.Nabha_HealthCare.Entity.User;
 import com.example.Nabha_HealthCare.DTO.UserResponse;
-import com.example.Nabha_HealthCare.Repositories.UserRepository;
+import com.example.Nabha_HealthCare.Repositories.User_Repo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,8 +16,9 @@ import java.util.Optional;
 
 @Service
 public class User_Service {
-    private UserRepository userRepository;
 
+    @Autowired
+    private User_Repo userRepository;
 
     public UserResponse register(User userInput) {
         if (userRepository.getByEmail(userInput.getEmail())) {

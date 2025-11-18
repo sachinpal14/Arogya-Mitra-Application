@@ -2,67 +2,53 @@ package com.example.Nabha_HealthCare.Service;
 
 import com.example.Nabha_HealthCare.Entity.Patient;
 import com.example.Nabha_HealthCare.Repositories.Patient_Repo;
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class Patient_Service {
+
     @Autowired
-    private Patient_Repo patientRepo;
+    private Patient_Repo patientRepository;
 
-    public List<Patient> getPatients() {
-        return patientRepo.findAll();
+    public Patient addPatient(Patient p) {
+        return patientRepository.save(p);
     }
 
-    public List<Patient> getByName(String name) {
-        return patientRepo.findByName(name);
+    public Patient getPatientById(Long id) {
+        return patientRepository.findById(Math.toIntExact(id))
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
     }
 
-    public Optional<Patient> getById(Integer id) {
-        return patientRepo.findById(id);
+    public List<Patient> getAllPatients() {
+        return patientRepository.findAll();
     }
 
-    public List<Patient> getByAge(Integer age) {
-        return patientRepo.findByAge(age);
+    public Patient updatePatient(Long id, Patient p) {
+        Patient existing = getPatientById(id);
+        existing.setName(p.getName());
+        existing.setGender(p.getGender());
+        existing.setEmail(p.getEmail());
+        existing.setPassword(p.getPassword());
+        existing.setDisease(p.getDisease());
+        existing.setAge(p.getAge());
+        existing.setHospital(p.getHospital());
+        return patientRepository.save(existing);
     }
 
-    public List<Patient> getByGender(String gender) {
-        return patientRepo.findByGender(gender);
+    public void dischargePatient(Long id) {
+        patientRepository.deleteById(Math.toIntExact(id));
     }
 
-    public List<Patient> getByPhone(String phone) {
-        return patientRepo.findByPhone(phone);
+    public List<Patient> getPatientsByHospital(Long hospitalId) {
+        return patientRepository.findByHospital_HospitalId(hospitalId);
     }
 
-    public List<Patient> getByVillage(String village) {
-        return patientRepo.findByVillage(village);
-    }
-
-    public void addPatient(Patient patient) {
-        patientRepo.save(patient);
-    }
-
-    public Patient updatePatient(Integer id, Patient updatedPatient) {
-        Optional<Patient> existing = patientRepo.findById(id);
-        if (existing.isPresent()) {
-            Patient p = existing.get();
-            p.setName(updatedPatient.getName());
-            p.setAge(updatedPatient.getAge());
-            p.setGender(updatedPatient.getGender());
-            p.setPhone(updatedPatient.getPhone());
-            p.setVillage(updatedPatient.getVillage());
-            return patientRepo.save(p);
-        } else {
-            throw new RuntimeException("Patient not found with ID: " + id);
-        }
-    }
-
-    @Transactional // Agar yaha koi error hota hai to rollback ho jayega
-    public void dischargePatient(String name) {
-        patientRepo.deleteByName(name);
+    public List<Patient> getPatientByName(String name) {
+        return patientRepository.findByNameContainingIgnoreCase(name);
     }
 }
