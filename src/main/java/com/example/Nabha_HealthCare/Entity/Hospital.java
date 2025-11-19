@@ -1,5 +1,6 @@
 package com.example.Nabha_HealthCare.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,9 +23,11 @@ public class Hospital {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"hospital", "patients", "appointments"})
     private List<Doctor> doctors;
 
     @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("hospital")
     private List<Patient> patients;
 
     @ManyToOne

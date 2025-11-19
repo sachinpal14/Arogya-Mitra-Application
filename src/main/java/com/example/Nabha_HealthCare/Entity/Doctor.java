@@ -1,7 +1,11 @@
 package com.example.Nabha_HealthCare.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 
@@ -25,10 +29,11 @@ public class Doctor {
 
 
     @ManyToOne
-    @JoinColumn(name="hospital_id")
+    @JoinColumn(name = "hospital_id")
+    @JsonIgnoreProperties({"doctors", "patients", "appointments"})
     private Hospital hospital;
 
-
-    @OneToMany(mappedBy="doctor")
+    @OneToMany(mappedBy = "doctor")
+    @JsonIgnoreProperties({"doctor", "patient", "hospital"})
     private List<Appointment> appointments;
 }

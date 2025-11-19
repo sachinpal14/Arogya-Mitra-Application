@@ -7,6 +7,7 @@ import com.example.Nabha_HealthCare.Entity.User;
 import com.example.Nabha_HealthCare.DTO.UserResponse;
 import com.example.Nabha_HealthCare.Service.User_Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,7 +59,8 @@ public class User_Controller {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         userService.deleteUser(id);
+        return ResponseEntity.ok("User Deleted Successfully!");
     }
 }

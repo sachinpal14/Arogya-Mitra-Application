@@ -21,7 +21,7 @@ public class User_Service {
     private User_Repo userRepository;
 
     public UserResponse register(User userInput) {
-        if (userRepository.getByEmail(userInput.getEmail())) {
+        if (userRepository.existsByEmail(userInput.getEmail())) {
             throw new RuntimeException("User already registered!");
         }
         String role = userInput.getRole();
@@ -61,6 +61,8 @@ public class User_Service {
     public UserResponse updateUser(Long id, User newData) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         if (newData.getName() != null) user.setName(newData.getName());
+        if (newData.getPhone() != null) user.setPhone(newData.getPhone());
+        if (newData.getGender() != null) user.setGender(newData.getGender());
         if (newData.getPassword() != null) user.setPassword(newData.getPassword());
         if (newData.getRole() != null) user.setRole(newData.getRole().toLowerCase());
         // email should not be changed easily; if you allow, check uniqueness.
@@ -69,7 +71,7 @@ public class User_Service {
     }
 
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+         userRepository.deleteById(id);
     }
 
     /* ------------------ Helper methods ------------------ */
@@ -107,7 +109,7 @@ public class User_Service {
     }
 
     public UserResponse mapToResponse(User user) {
-        return new UserResponse(user.getUserId(), user.getName(), user.getEmail(), user.getRole(), user.getCreatedAt());
+        return new UserResponse(user.getUserId(), user.getName(), user.getPhone(),user.getGender(),user.getEmail(), user.getRole(), user.getCreatedAt());
     }
 
 }

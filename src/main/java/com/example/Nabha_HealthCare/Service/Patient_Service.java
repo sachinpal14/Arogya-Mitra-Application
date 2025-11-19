@@ -25,8 +25,17 @@ public class Patient_Service {
     }
 
     public List<Patient> getAllPatients() {
-        return patientRepository.findAll();
+        List<Patient> patients = patientRepository.findAll();
+
+        for (Patient p : patients) {
+            if (p.getHospital() != null) {
+                p.getHospital().setAdmin(null);
+            }
+        }
+
+        return patients;
     }
+
 
     public Patient updatePatient(Long id, Patient p) {
         Patient existing = getPatientById(id);
@@ -45,10 +54,25 @@ public class Patient_Service {
     }
 
     public List<Patient> getPatientsByHospital(Long hospitalId) {
-        return patientRepository.findByHospital_HospitalId(hospitalId);
+        List<Patient> patients =  patientRepository.findByHospital_HospitalId(hospitalId);
+        for (Patient p : patients) {
+            if (p.getHospital() != null) {
+                p.getHospital().setAdmin(null);
+            }
+        }
+
+        return patients;
     }
 
     public List<Patient> getPatientByName(String name) {
-        return patientRepository.findByNameContainingIgnoreCase(name);
+        List<Patient> patients = patientRepository.findByNameContainingIgnoreCase(name);
+
+        for (Patient p : patients) {
+            if (p.getHospital() != null) {
+                p.getHospital().setAdmin(null);
+            }
+        }
+
+        return patients;
     }
 }
