@@ -1,9 +1,9 @@
 package com.example.Nabha_HealthCare.Service;
 
-import com.example.Nabha_HealthCare.DTO.AuthResponse;
 import com.example.Nabha_HealthCare.DTO.LoginRequest;
-import com.example.Nabha_HealthCare.Entity.User;
+import com.example.Nabha_HealthCare.DTO.LoginResponseDTO;
 import com.example.Nabha_HealthCare.DTO.UserResponse;
+import com.example.Nabha_HealthCare.Entity.User;
 import com.example.Nabha_HealthCare.Repositories.User_Repo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class User_Service {
         return mapToResponse(saved);
     }
 
-    public AuthResponse login(LoginRequest loginRequest) {
+    public LoginResponseDTO login(LoginRequest loginRequest) {
         Optional<User> opt = userRepository.findByEmail(loginRequest.getEmail());
         if (opt.isEmpty()) {
             throw new RuntimeException("Invalid credentials");
@@ -43,8 +43,7 @@ public class User_Service {
         if (!Objects.equals(user.getPassword(), loginRequest.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
-        List<String> permissions = permissionsForRole(user.getRole());
-        return new AuthResponse(mapToResponse(user), permissions, "Login successful");
+        return mapToLoginResponse(user);
     }
 
     public List<UserResponse> getAllUsers() {
@@ -110,6 +109,17 @@ public class User_Service {
 
     public UserResponse mapToResponse(User user) {
         return new UserResponse(user.getUserId(), user.getName(), user.getPhone(),user.getGender(),user.getEmail(), user.getRole(), user.getCreatedAt());
+    }
+    public LoginResponseDTO mapToLoginResponse(User user) {
+        return new LoginResponseDTO(
+                user.getUserId(),
+                user.getName(),
+                user.getPhone(),
+                user.getGender(),
+                user.getEmail(),
+                user.getRole(),
+                user.getCreatedAt()
+        );
     }
 
 }

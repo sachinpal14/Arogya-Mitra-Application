@@ -3,6 +3,7 @@ package com.example.Nabha_HealthCare.Controller;
 
 import com.example.Nabha_HealthCare.DTO.AuthResponse;
 import com.example.Nabha_HealthCare.DTO.LoginRequest;
+import com.example.Nabha_HealthCare.DTO.LoginResponseDTO;
 import com.example.Nabha_HealthCare.Entity.User;
 import com.example.Nabha_HealthCare.DTO.UserResponse;
 import com.example.Nabha_HealthCare.Service.User_Service;
@@ -26,7 +27,7 @@ public class User_Controller {
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody LoginRequest loginRequest) {return userService.login(loginRequest);}
+    public LoginResponseDTO login(@RequestBody LoginRequest loginRequest) {return userService.login(loginRequest);}
 
     @GetMapping("/me")
     public AuthResponse me(@RequestParam Long userId) {
